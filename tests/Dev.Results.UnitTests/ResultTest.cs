@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Dev.Results.UnitTests
 {
@@ -30,9 +31,29 @@ namespace Dev.Results.UnitTests
         }
 
         [Test]
+        public void StatusWithListErrorsTest()
+        {
+            var result = Result<string>.Error(new List<string> { "Error 1", "Error 2" });
+
+            Assert.IsNotNull(result);
+            Assert.IsNull(result.Data);
+            Assert.IsFalse(result.IsSuccess);
+        }
+
+        [Test]
         public void StatusWithInvalidTest()
         {
             var result = Result<string>.Invalid(new ValidationError("identifier", "error message"));
+
+            Assert.IsNotNull(result);
+            Assert.IsNull(result.Data);
+            Assert.IsFalse(result.IsSuccess);
+        }
+
+        [Test]
+        public void StatusWithListInvalidsTest()
+        {
+            var result = Result<string>.Invalid(new List<ValidationError> { new("identifier", "error message") });
 
             Assert.IsNotNull(result);
             Assert.IsNull(result.Data);

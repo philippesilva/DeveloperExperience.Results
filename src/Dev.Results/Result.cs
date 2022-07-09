@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace Dev.Results
 {
-    public class Result<T>
+    public class Result<T> : IResult
     {
         public T Data { get; }
-        public IEnumerable<string> Errors { get; private set; } = new List<string>();
-        public List<ValidationError> ValidationErrors { get; private set; } = new List<ValidationError>();
+        public IEnumerable<string> Errors { get; private init; } = new List<string>();
+        public List<ValidationError> ValidationErrors { get; private init; } = new();
         public bool IsSuccess => !(Errors.Any() || ValidationErrors.Any());
 
         public Result(T data)
@@ -26,7 +26,7 @@ namespace Dev.Results
 
         public static Result<T> Invalid(ValidationError validationError)
         {
-            return new Result<T>()
+            return new Result<T>
             {
                 ValidationErrors = new List<ValidationError>
                 {
@@ -37,7 +37,7 @@ namespace Dev.Results
 
         public static Result<T> Invalid(IEnumerable<ValidationError> validationErrors)
         {
-            return new Result<T>()
+            return new Result<T>
             {
                 ValidationErrors = validationErrors.ToList()
             };
@@ -45,7 +45,7 @@ namespace Dev.Results
 
         public static Result<T> Error(IEnumerable<string> errorMessages)
         {
-            return new Result<T>()
+            return new Result<T>
             {
                 Errors = errorMessages
             };
@@ -53,7 +53,7 @@ namespace Dev.Results
 
         public static Result<T> Error(params string[] errorMessages)
         {
-            return new Result<T>() { Errors = errorMessages };
+            return new Result<T> { Errors = errorMessages };
         }
     }
 }

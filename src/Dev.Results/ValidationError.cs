@@ -1,6 +1,6 @@
 ﻿namespace Dev.Results
 {
-    public class ValidationError
+    public struct ValidationError
     {
         public string Identifier { get; set; }
         public string ErrorMessage { get; set; }
